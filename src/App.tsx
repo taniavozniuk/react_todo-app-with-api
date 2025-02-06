@@ -107,11 +107,6 @@ export const App: React.FC = () => {
     setLoadingTodoId(prev => [...prev, updatedTodo.id]);
     setIsLoading(true);
     setError('');
-    // const todoDelete = todos.find(todo => todo.id === id);
-
-    // if (!todoDelete) {
-    //   return;
-    // }
 
     updateTodos(updatedTodo)
       .then(() => {
