@@ -33,14 +33,18 @@ export const TodoItem: React.FC<Props> = ({
   const [editedTitle, setEditedTitle] = useState(todo.title);
 
   const saveUpdateTitle = () => {
-    if (editedTitle.trim() === todo.title) {
-      setError('Unable to delete a todo');
+    const trimedTitle = editedTitle.trim();
+    // if (editedTitle.trim() === todo.title) {
+    //   setError('Unable to delete a todo');
 
-      return;
+    //   return;
+    // }
+    if (!trimedTitle) {
+      handleDelete(todo.id);
     }
 
-    if (editedTitle.trim()) {
-      handleUpdate({ ...todo, title: editedTitle.trim() });
+    if (trimedTitle) {
+      handleUpdate({ ...todo, title: trimedTitle });
       setError('');
       setEditTodoId(null);
     }

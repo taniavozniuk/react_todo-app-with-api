@@ -10,6 +10,7 @@ import { TodoList } from './component/TodoList';
 import { Footer } from './component/Footer';
 import { TempTodo } from './component/TempTodo';
 import { Header } from './component/Header';
+import { updateTodos } from './api/todos';
 
 export const App: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -112,7 +113,7 @@ export const App: React.FC = () => {
     //   return;
     // }
 
-    postTodos(updatedTodo)
+    updateTodos(updatedTodo)
       .then(() => {
         setTodos(prevTodos =>
           prevTodos.map(todo =>
@@ -130,7 +131,7 @@ export const App: React.FC = () => {
 
         setTimeout(() => {
           inputRef.current?.focus();
-        }, 3000);
+        }, 5000);
       });
   };
 
