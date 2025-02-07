@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { RefObject, useState } from 'react';
 import classNames from 'classnames';
 
 interface Todo {
@@ -17,6 +17,7 @@ interface Props {
   setError: (message: string) => void;
   isEditing: boolean;
   setEditTodoId: (id: number | null) => void; // Add this function for setting editing state
+  inputRef: RefObject<HTMLInputElement>;
 }
 
 export const TodoItem: React.FC<Props> = ({
@@ -28,19 +29,17 @@ export const TodoItem: React.FC<Props> = ({
   setError,
   isEditing,
   setEditTodoId,
+  inputRef,
 }) => {
   const isLoading = loadingTodoId.includes(todo.id);
   const [editedTitle, setEditedTitle] = useState(todo.title);
 
   const saveUpdateTitle = () => {
     const trimedTitle = editedTitle.trim();
-    // if (editedTitle.trim() === todo.title) {
-    //   setError('Unable to delete a todo');
 
-    //   return;
-    // }
     if (!trimedTitle) {
       handleDelete(todo.id);
+      inputRef.current?.focus();
     }
 
     if (trimedTitle) {
@@ -56,6 +55,7 @@ export const TodoItem: React.FC<Props> = ({
     } else if (event.key === 'Escape') {
       setEditTodoId(null);
       setEditedTitle(todo.title);
+      inputRef.current?.focus();
     }
   };
 

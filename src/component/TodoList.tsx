@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { RefObject, useState } from 'react';
 import { Todo } from '../types/Todo';
 import { TodoItem } from './TodoItem';
 
@@ -9,6 +9,7 @@ interface Props {
   loadingTodoId: number[];
   handleUpdate: (updatedTodo: Todo) => void;
   setError: (message: string) => void;
+  inputRef: RefObject<HTMLInputElement>;
 }
 
 export const TodoList: React.FC<Props> = ({
@@ -18,6 +19,7 @@ export const TodoList: React.FC<Props> = ({
   loadingTodoId,
   handleUpdate,
   setError,
+  inputRef,
 }) => {
   const [editTodoId, setEditTodoId] = useState<number | null>(null);
 
@@ -38,6 +40,7 @@ export const TodoList: React.FC<Props> = ({
           setError={setError}
           isEditing={editTodoId === todo.id}
           setEditTodoId={setEditTodoId}
+          inputRef={inputRef}
         />
       ))}
     </section>

@@ -43,6 +43,7 @@ export const App: React.FC = () => {
 
     if (!title.trim()) {
       setError('Title should not be empty');
+      inputRef.current?.focus();
 
       return;
     }
@@ -68,6 +69,7 @@ export const App: React.FC = () => {
       .catch(() => {
         setError('Unable to add a todo');
         setTitle(title);
+        inputRef.current?.focus();
       })
       .finally(() => {
         setIsLoading(false);
@@ -92,6 +94,7 @@ export const App: React.FC = () => {
       })
       .catch(() => {
         setError('Unable to delete a todo');
+        inputRef.current?.focus();
       })
       .finally(() => {
         setIsLoading(false);
@@ -99,7 +102,7 @@ export const App: React.FC = () => {
 
         setTimeout(() => {
           inputRef.current?.focus();
-        }, 3000);
+        }, 4000);
       });
   };
 
@@ -119,6 +122,7 @@ export const App: React.FC = () => {
       })
       .catch(() => {
         setError('Unable to update a todo');
+        inputRef.current?.focus();
       })
       .finally(() => {
         setIsLoading(false);
@@ -126,7 +130,7 @@ export const App: React.FC = () => {
 
         setTimeout(() => {
           inputRef.current?.focus();
-        }, 5000);
+        }, 3000);
       });
   };
 
@@ -176,11 +180,15 @@ export const App: React.FC = () => {
         );
       })
       .catch(() => {
-        setError('Unable to update a todo status');
+        setError('Unable to update a todo');
       })
       .finally(() => {
         setIsLoading(false);
         setLoadingTodoId(prev => prev.filter(todoId => todoId !== id));
+
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 3000);
       });
   };
 
@@ -218,6 +226,7 @@ export const App: React.FC = () => {
           loadingTodoId={loadingTodoId}
           handleUpdate={handleUpdate}
           setError={setError}
+          inputRef={inputRef}
         />
 
         {tempTodo && <TempTodo tempTodo={tempTodo} />}
