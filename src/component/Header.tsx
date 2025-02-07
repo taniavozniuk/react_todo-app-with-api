@@ -1,5 +1,6 @@
 import React, { RefObject } from 'react';
 import { Todo } from '../types/Todo';
+import classNames from 'classnames';
 
 interface HeaderProps {
   handleSubmit: (event: React.FormEvent) => void;
@@ -21,16 +22,22 @@ export const Header: React.FC<HeaderProps> = ({
   todos,
 }) => {
   const allCompleted = todos.every(todo => todo.completed);
+  // const showButton = isLoading && todos.length > 0;
 
   return (
     <header className="todoapp__header">
       {/* this button should have `active` class only if all todos are completed */}
-      <button
-        type="button"
-        className={`todoapp__toggle-all ${allCompleted ? 'active' : ''}`}
-        data-cy="ToggleAllButton"
-        onClick={toggleAllTodos}
-      />
+
+      {!!todos.length && (
+        <button
+          type="button"
+          className={classNames('todoapp__toggle-all', {
+            active: allCompleted,
+          })}
+          data-cy="ToggleAllButton"
+          onClick={toggleAllTodos}
+        />
+      )}
 
       {/* Add a todo on form submit */}
       <form onSubmit={handleSubmit}>

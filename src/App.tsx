@@ -78,7 +78,7 @@ export const App: React.FC = () => {
   const handleDelete = (id: number) => {
     setLoadingTodoId(prev => [...prev, id]);
     setIsLoading(true);
-    setError('');
+    // setError('');
     const todoDelete = todos.find(todo => todo.id === id);
 
     if (!todoDelete) {
@@ -142,9 +142,46 @@ export const App: React.FC = () => {
   };
 
   const toggleAllTodos = () => {
-    const areAllCompleted = todos.every(todo => !todo.completed);
+    const areAllCompleted = todos.every(todo => todo.completed);
 
-    setTodos(todos.map(todo => ({ ...todo, completed: !areAllCompleted })));
+    // Фільтруємо тільки ті, які треба оновити
+    const todosToUpdate = todos.filter(
+      todo => todo.completed === areAllCompleted,
+    );
+
+    if (todosToUpdate.length === 0) {
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    // Оновлюємо локальний стейт одразу для кращого UX
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        todosToUpdate.some(t => t.id === todo.id)
+          ? { ...todo, completed: !areAllCompleted }
+          : todo,
+      ),
+    );
+
+    // Надсилаємо запити тільки для змінених todo
+    todosToUpdate.forEach(todo => {
+      const updatedTodo = { ...todo, completed: !areAllCompleted };
+
+      updateTodos(updatedTodo)
+        .then(() => {
+          setTodos(prevTodos =>
+            prevTodos.map(t => (t.id === updatedTodo.id ? updatedTodo : t)),
+          );
+        })
+        .catch(() => {
+          setError('Unable to update some todos');
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    });
   };
 
   const toggleTodo = (id: number) => {
