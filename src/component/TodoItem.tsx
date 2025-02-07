@@ -83,6 +83,7 @@ export const TodoItem: React.FC<Props> = ({
           type="text"
           className="todo__edit-input"
           value={editedTitle}
+          placeholder="Empty todo will be deleted"
           onChange={e => setEditedTitle(e.target.value)}
           onBlur={saveUpdateTitle}
           onKeyDown={handleKeyDown}

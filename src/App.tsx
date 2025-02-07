@@ -154,11 +154,34 @@ export const App: React.FC = () => {
   };
 
   const toggleTodo = (id: number) => {
-    setTodos(prevTodos =>
-      prevTodos.map(todo =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-      ),
-    );
+    const todoUpdate = todos.find(todo => todo.id === id);
+
+    if (!todoUpdate) {
+      return;
+    }
+
+    const updatedTodo: Todo = {
+      ...todoUpdate,
+      completed: !todoUpdate.completed,
+    };
+
+    setLoadingTodoId(prev => [...prev, id]);
+    setIsLoading(true);
+    setError('');
+
+    updateTodos(updatedTodo)
+      .then(() => {
+        setTodos(prevTodos =>
+          prevTodos.map(todo => (todo.id === id ? updatedTodo : todo)),
+        );
+      })
+      .catch(() => {
+        setError('Unable to update a todo status');
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setLoadingTodoId(prev => prev.filter(todoId => todoId !== id));
+      });
   };
 
   const filteredTodos = todos.filter(todo => {
