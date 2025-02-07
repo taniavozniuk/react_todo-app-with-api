@@ -1,4 +1,5 @@
 import React, { RefObject } from 'react';
+import { Todo } from '../types/Todo';
 
 interface HeaderProps {
   handleSubmit: (event: React.FormEvent) => void;
@@ -6,6 +7,8 @@ interface HeaderProps {
   handleTitleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
   inputRef: RefObject<HTMLInputElement>;
+  todos: Todo[];
+  toggleAllTodos: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -14,14 +17,19 @@ export const Header: React.FC<HeaderProps> = ({
   handleTitleChange,
   isLoading,
   inputRef,
+  toggleAllTodos,
+  todos,
 }) => {
+  const allCompleted = todos.every(todo => todo.completed);
+
   return (
     <header className="todoapp__header">
       {/* this button should have `active` class only if all todos are completed */}
       <button
         type="button"
-        className="todoapp__toggle-all active"
+        className={`todoapp__toggle-all ${allCompleted ? 'active' : ''}`}
         data-cy="ToggleAllButton"
+        onClick={toggleAllTodos}
       />
 
       {/* Add a todo on form submit */}

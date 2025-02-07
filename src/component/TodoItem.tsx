@@ -29,7 +29,6 @@ export const TodoItem: React.FC<Props> = ({
   setError,
   isEditing,
   setEditTodoId,
-  inputRef,
 }) => {
   const isLoading = loadingTodoId.includes(todo.id);
   const [editedTitle, setEditedTitle] = useState(todo.title);
@@ -39,7 +38,6 @@ export const TodoItem: React.FC<Props> = ({
 
     if (!trimedTitle) {
       handleDelete(todo.id);
-      inputRef.current?.focus();
     }
 
     if (trimedTitle) {
@@ -55,7 +53,6 @@ export const TodoItem: React.FC<Props> = ({
     } else if (event.key === 'Escape') {
       setEditTodoId(null);
       setEditedTitle(todo.title);
-      inputRef.current?.focus();
     }
   };
 

@@ -33,10 +33,10 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (inputRef.current && tempTodo === null) {
+    if (inputRef.current && !isLoading) {
       inputRef.current.focus();
     }
-  }, [tempTodo]);
+  }, [isLoading]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,12 +64,10 @@ export const App: React.FC = () => {
         setTodos(prevTodos => [...prevTodos, createdTodo]);
         setTitle('');
         setError('');
-        inputRef.current?.focus();
       })
       .catch(() => {
         setError('Unable to add a todo');
         setTitle(title);
-        inputRef.current?.focus();
       })
       .finally(() => {
         setIsLoading(false);
@@ -94,15 +92,10 @@ export const App: React.FC = () => {
       })
       .catch(() => {
         setError('Unable to delete a todo');
-        inputRef.current?.focus();
       })
       .finally(() => {
         setIsLoading(false);
         setLoadingTodoId(prev => [...prev, id]);
-
-        setTimeout(() => {
-          inputRef.current?.focus();
-        }, 4000);
       });
   };
 
@@ -122,15 +115,10 @@ export const App: React.FC = () => {
       })
       .catch(() => {
         setError('Unable to update a todo');
-        inputRef.current?.focus();
       })
       .finally(() => {
         setIsLoading(false);
         setLoadingTodoId(prev => prev.filter(id => id !== updatedTodo.id));
-
-        setTimeout(() => {
-          inputRef.current?.focus();
-        }, 3000);
       });
   };
 
@@ -151,10 +139,12 @@ export const App: React.FC = () => {
     completedTodos.forEach(todo => {
       handleDelete(todo.id);
     });
+  };
 
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 3000);
+  const toggleAllTodos = () => {
+    const areAllCompleted = todos.every(todo => !todo.completed);
+
+    setTodos(todos.map(todo => ({ ...todo, completed: !areAllCompleted })));
   };
 
   const toggleTodo = (id: number) => {
@@ -185,10 +175,6 @@ export const App: React.FC = () => {
       .finally(() => {
         setIsLoading(false);
         setLoadingTodoId(prev => prev.filter(todoId => todoId !== id));
-
-        setTimeout(() => {
-          inputRef.current?.focus();
-        }, 3000);
       });
   };
 
@@ -212,11 +198,13 @@ export const App: React.FC = () => {
 
       <div className="todoapp__content">
         <Header
+          todos={todos}
           handleSubmit={handleSubmit}
           title={title}
           handleTitleChange={handleTitleChange}
           isLoading={isLoading}
           inputRef={inputRef}
+          toggleAllTodos={toggleAllTodos}
         />
 
         <TodoList
