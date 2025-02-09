@@ -49,8 +49,11 @@ export const TodoItem: React.FC<Props> = ({
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      setEditTodoId(null);
-      saveUpdateTitle();
+      if (editedTitle.trim() !== todo.title) {
+        saveUpdateTitle();
+      } else {
+        setEditTodoId(null);
+      }
     } else if (event.key === 'Escape') {
       setEditTodoId(null);
       setEditedTitle(todo.title);
