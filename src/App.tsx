@@ -38,6 +38,14 @@ export const App: React.FC = () => {
     }
   }, [isLoading]);
 
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        setError('');
+      }, 3000);
+    }
+  }, [error]);
+
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -88,14 +96,17 @@ export const App: React.FC = () => {
     deleteTodos(id)
       .then(() => {
         setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
-        setError('');
       })
       .catch(() => {
         setError('Unable to delete a todo');
+        // setTimeout(() => {
+        //   setError('');
+        // }, 3000);
       })
       .finally(() => {
         setIsLoading(false);
-        setLoadingTodoId(prev => [...prev, id]);
+        // setLoadingTodoId(prev => [...prev, id]);
+        setLoadingTodoId(prev => prev.filter(todoId => todoId !== id));
       });
   };
 
