@@ -47,8 +47,6 @@ export const App: React.FC = () => {
     }
   }, [error]);
 
-  // useEffect(() => setError(''), error);
-
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -74,7 +72,6 @@ export const App: React.FC = () => {
       .then(createdTodo => {
         setTodos(prevTodos => [...prevTodos, createdTodo]);
         setTitle('');
-        // setError('');
       })
       .catch(() => {
         setError('Unable to add a todo');
@@ -89,7 +86,6 @@ export const App: React.FC = () => {
   const handleDelete = (id: number) => {
     setLoadingTodoId(prev => [...prev, id]);
     setIsLoading(true);
-    // setError('');
     const todoDelete = todos.find(todo => todo.id === id);
 
     if (!todoDelete) {
@@ -103,21 +99,16 @@ export const App: React.FC = () => {
       })
       .catch(() => {
         setError('Unable to delete a todo');
-        // setTimeout(() => {
-        //   setError('');
-        // }, 3000);
       })
       .finally(() => {
         setIsLoading(false);
         setLoadingTodoId(prev => [...prev, id]);
-        // setLoadingTodoId(prev => prev.filter(todoId => todoId !== id));
       });
   };
 
   const handleUpdate = (updatedTodo: Todo) => {
     setLoadingTodoId(prev => [...prev, updatedTodo.id]);
     setIsLoading(true);
-    // setError('');
 
     updateTodos(updatedTodo)
       .then(() => {
@@ -131,7 +122,6 @@ export const App: React.FC = () => {
       })
       .catch(() => {
         setError('Unable to update a todo');
-        // inputRef.current?.focus();
       })
       .finally(() => {
         setIsLoading(false);
@@ -151,7 +141,6 @@ export const App: React.FC = () => {
     }
 
     setIsLoading(true);
-    // setError('');
 
     completedTodos.forEach(todo => {
       handleDelete(todo.id);
@@ -170,7 +159,6 @@ export const App: React.FC = () => {
     }
 
     setIsLoading(true);
-    // setError('');
 
     setTodos(prevTodos =>
       prevTodos.map(todo =>
@@ -212,7 +200,6 @@ export const App: React.FC = () => {
 
     setLoadingTodoId(prev => [...prev, id]);
     setIsLoading(true);
-    // setError('');
 
     updateTodos(updatedTodo)
       .then(() => {

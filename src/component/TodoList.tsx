@@ -20,17 +20,10 @@ export const TodoList: React.FC<Props> = ({
   handleDelete,
   loadingTodoId,
   handleUpdate,
-  setError,
   inputRef,
   editTodoId,
   setEditTodoId,
 }) => {
-  // const [editTodoId, setEditTodoId] = useState<number | null>(null);
-
-  // const handleEdit = (id: number) => {
-  //   setEditTodoId(id);
-  // };
-
   return (
     <section className="todoapp__main" data-cy="TodoList">
       {filteredTodos.map(todo => (
@@ -41,7 +34,6 @@ export const TodoList: React.FC<Props> = ({
           handleDelete={handleDelete}
           loadingTodoId={loadingTodoId}
           handleUpdate={handleUpdate}
-          setError={setError}
           isEditing={editTodoId === todo.id}
           setEditTodoId={setEditTodoId}
           inputRef={inputRef}

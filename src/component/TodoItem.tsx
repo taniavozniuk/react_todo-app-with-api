@@ -14,7 +14,6 @@ interface Props {
   handleDelete: (id: number) => void;
   loadingTodoId: number[];
   handleUpdate: (updatedTodo: Todo) => void;
-  setError: (message: string) => void;
   isEditing: boolean;
   setEditTodoId: (id: number | null) => void;
   inputRef: RefObject<HTMLInputElement>;
@@ -26,7 +25,6 @@ export const TodoItem: React.FC<Props> = ({
   handleDelete,
   loadingTodoId,
   handleUpdate,
-  // setError,
   isEditing,
   setEditTodoId,
 }) => {
@@ -42,8 +40,6 @@ export const TodoItem: React.FC<Props> = ({
 
     if (trimedTitle) {
       handleUpdate({ ...todo, title: trimedTitle });
-      // setError('');
-      // setEditTodoId(null);
     }
   };
 
