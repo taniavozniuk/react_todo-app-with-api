@@ -21,6 +21,7 @@ export const App: React.FC = () => {
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingTodoId, setLoadingTodoId] = useState<number[]>([]);
+  const [editTodoId, setEditTodoId] = useState<number | null>(null);
 
   const loadTodos = () => {
     getTodos()
@@ -45,6 +46,8 @@ export const App: React.FC = () => {
       }, 3000);
     }
   }, [error]);
+
+  // useEffect(() => setError(''), error);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -71,7 +74,7 @@ export const App: React.FC = () => {
       .then(createdTodo => {
         setTodos(prevTodos => [...prevTodos, createdTodo]);
         setTitle('');
-        setError('');
+        // setError('');
       })
       .catch(() => {
         setError('Unable to add a todo');
@@ -96,6 +99,7 @@ export const App: React.FC = () => {
     deleteTodos(id)
       .then(() => {
         setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+        setEditTodoId(null);
       })
       .catch(() => {
         setError('Unable to delete a todo');
@@ -105,15 +109,15 @@ export const App: React.FC = () => {
       })
       .finally(() => {
         setIsLoading(false);
-        // setLoadingTodoId(prev => [...prev, id]);
-        setLoadingTodoId(prev => prev.filter(todoId => todoId !== id));
+        setLoadingTodoId(prev => [...prev, id]);
+        // setLoadingTodoId(prev => prev.filter(todoId => todoId !== id));
       });
   };
 
   const handleUpdate = (updatedTodo: Todo) => {
     setLoadingTodoId(prev => [...prev, updatedTodo.id]);
     setIsLoading(true);
-    setError('');
+    // setError('');
 
     updateTodos(updatedTodo)
       .then(() => {
@@ -123,9 +127,11 @@ export const App: React.FC = () => {
           ),
         );
         setError('');
+        setEditTodoId(null);
       })
       .catch(() => {
         setError('Unable to update a todo');
+        // inputRef.current?.focus();
       })
       .finally(() => {
         setIsLoading(false);
@@ -145,7 +151,7 @@ export const App: React.FC = () => {
     }
 
     setIsLoading(true);
-    setError('');
+    // setError('');
 
     completedTodos.forEach(todo => {
       handleDelete(todo.id);
@@ -155,7 +161,6 @@ export const App: React.FC = () => {
   const toggleAllTodos = () => {
     const areAllCompleted = todos.every(todo => todo.completed);
 
-    // Фільтруємо тільки ті, які треба оновити
     const todosToUpdate = todos.filter(
       todo => todo.completed === areAllCompleted,
     );
@@ -165,9 +170,8 @@ export const App: React.FC = () => {
     }
 
     setIsLoading(true);
-    setError('');
+    // setError('');
 
-    // Оновлюємо локальний стейт одразу для кращого UX
     setTodos(prevTodos =>
       prevTodos.map(todo =>
         todosToUpdate.some(t => t.id === todo.id)
@@ -176,7 +180,6 @@ export const App: React.FC = () => {
       ),
     );
 
-    // Надсилаємо запити тільки для змінених todo
     todosToUpdate.forEach(todo => {
       const updatedTodo = { ...todo, completed: !areAllCompleted };
 
@@ -209,7 +212,7 @@ export const App: React.FC = () => {
 
     setLoadingTodoId(prev => [...prev, id]);
     setIsLoading(true);
-    setError('');
+    // setError('');
 
     updateTodos(updatedTodo)
       .then(() => {
@@ -263,6 +266,8 @@ export const App: React.FC = () => {
           handleUpdate={handleUpdate}
           setError={setError}
           inputRef={inputRef}
+          editTodoId={editTodoId}
+          setEditTodoId={setEditTodoId}
         />
 
         {tempTodo && <TempTodo tempTodo={tempTodo} />}
