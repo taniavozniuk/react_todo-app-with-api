@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const TodoItem: React.FC<Props> = ({
-  todo,
+  todo: { id, title, completed },
   toggleTodo,
   handleDelete,
   loadingTodoId,
@@ -28,31 +28,31 @@ export const TodoItem: React.FC<Props> = ({
   isEditing,
   setEditTodoId,
 }) => {
-  const isLoading = loadingTodoId.includes(todo.id);
-  const [editedTitle, setEditedTitle] = useState(todo.title);
+  const isLoading = loadingTodoId.includes(id);
+  const [editedTitle, setEditedTitle] = useState(title);
 
   const saveUpdateTitle = () => {
     const trimedTitle = editedTitle.trim();
 
     if (!trimedTitle) {
-      handleDelete(todo.id);
+      handleDelete(id);
     }
 
     if (trimedTitle) {
-      handleUpdate({ ...todo, title: trimedTitle });
+      handleUpdate({ id, title: trimedTitle, completed, userId: 0 });
     }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      if (editedTitle.trim() !== todo.title) {
+      if (editedTitle.trim() !== title) {
         saveUpdateTitle();
       } else {
         setEditTodoId(null);
       }
     } else if (event.key === 'Escape') {
       setEditTodoId(null);
-      setEditedTitle(todo.title);
+      setEditedTitle(title);
     }
   };
 
@@ -60,7 +60,7 @@ export const TodoItem: React.FC<Props> = ({
     <div
       data-cy="Todo"
       className={classNames('todo', {
-        completed: todo.completed,
+        completed: completed,
       })}
     >
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -69,8 +69,8 @@ export const TodoItem: React.FC<Props> = ({
           data-cy="TodoStatus"
           type="checkbox"
           className="todo__status"
-          checked={todo.completed}
-          onChange={() => toggleTodo(todo.id)}
+          checked={completed}
+          onChange={() => toggleTodo(id)}
           disabled={isLoading}
         />
       </label>
@@ -91,9 +91,9 @@ export const TodoItem: React.FC<Props> = ({
         <span
           data-cy="TodoTitle"
           className="todo__title"
-          onDoubleClick={() => setEditTodoId(todo.id)}
+          onDoubleClick={() => setEditTodoId(id)}
         >
-          {todo.title}
+          {title}
         </span>
       )}
 
@@ -103,7 +103,7 @@ export const TodoItem: React.FC<Props> = ({
           className="todo__remove"
           data-cy="TodoDelete"
           disabled={isLoading}
-          onClick={() => handleDelete(todo.id)}
+          onClick={() => handleDelete(id)}
         >
           ×
         </button>
