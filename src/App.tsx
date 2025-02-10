@@ -117,7 +117,6 @@ export const App: React.FC = () => {
             todo.id === updatedTodo.id ? updatedTodo : todo,
           ),
         );
-        setError('');
         setEditTodoId(null);
       })
       .catch(() => {

@@ -36,9 +36,7 @@ export const TodoItem: React.FC<Props> = ({
 
     if (!trimedTitle) {
       handleDelete(id);
-    }
-
-    if (trimedTitle) {
+    } else {
       handleUpdate({ id, title: trimedTitle, completed, userId: 0 });
     }
   };
