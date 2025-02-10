@@ -22,6 +22,7 @@ export const App: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loadingTodoId, setLoadingTodoId] = useState<number[]>([]);
   const [editTodoId, setEditTodoId] = useState<number | null>(null);
+  const [isProcessingTodos, setIsProcessingTodos] = useState(false);
 
   const loadTodos = () => {
     getTodos()
@@ -117,6 +118,7 @@ export const App: React.FC = () => {
             todo.id === updatedTodo.id ? updatedTodo : todo,
           ),
         );
+        // setError('');
         setEditTodoId(null);
       })
       .catch(() => {
@@ -157,6 +159,8 @@ export const App: React.FC = () => {
       return;
     }
 
+    setIsProcessingTodos(true);
+
     setIsLoading(true);
 
     setTodos(prevTodos =>
@@ -181,6 +185,7 @@ export const App: React.FC = () => {
         })
         .finally(() => {
           setIsLoading(false);
+          setIsProcessingTodos(false);
         });
     });
   };
@@ -254,6 +259,7 @@ export const App: React.FC = () => {
           inputRef={inputRef}
           editTodoId={editTodoId}
           setEditTodoId={setEditTodoId}
+          isProcessingTodos={isProcessingTodos}
         />
 
         {tempTodo && <TempTodo tempTodo={tempTodo} />}

@@ -17,6 +17,7 @@ interface Props {
   isEditing: boolean;
   setEditTodoId: (id: number | null) => void;
   inputRef: RefObject<HTMLInputElement>;
+  isProcessingTodos: boolean;
 }
 
 export const TodoItem: React.FC<Props> = ({
@@ -27,8 +28,9 @@ export const TodoItem: React.FC<Props> = ({
   handleUpdate,
   isEditing,
   setEditTodoId,
+  isProcessingTodos,
 }) => {
-  const isLoading = loadingTodoId.includes(id);
+  const isLoading = loadingTodoId.includes(id) || isProcessingTodos;
   const [editedTitle, setEditedTitle] = useState(title);
 
   const saveUpdateTitle = () => {

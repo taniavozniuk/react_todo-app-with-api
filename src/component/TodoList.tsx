@@ -12,6 +12,7 @@ interface Props {
   inputRef: RefObject<HTMLInputElement>;
   editTodoId: number | null;
   setEditTodoId: (id: number | null) => void;
+  isProcessingTodos: boolean;
 }
 
 export const TodoList: React.FC<Props> = ({
@@ -23,6 +24,7 @@ export const TodoList: React.FC<Props> = ({
   inputRef,
   editTodoId,
   setEditTodoId,
+  isProcessingTodos,
 }) => {
   return (
     <section className="todoapp__main" data-cy="TodoList">
@@ -37,6 +39,7 @@ export const TodoList: React.FC<Props> = ({
           isEditing={editTodoId === todo.id}
           setEditTodoId={setEditTodoId}
           inputRef={inputRef}
+          isProcessingTodos={isProcessingTodos}
         />
       ))}
     </section>
